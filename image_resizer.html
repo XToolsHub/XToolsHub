@@ -88,7 +88,7 @@
 
         .tool-container {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1.2fr 0.8fr;
             gap: var(--space-lg);
             background-color: var(--bg-card);
             border-radius: var(--radius-md);
@@ -270,44 +270,38 @@
             height: 18px;
         }
 
-        .preview-container {
-            flex-grow: 1;
+        .toggle-buttons {
             display: flex;
-            justify-content: center;
-            align-items: center;
             background-color: rgba(0, 0, 0, 0.2);
-            border-radius: var(--radius-md);
+            border-radius: var(--radius-sm);
             overflow: hidden;
             margin-bottom: var(--space-md);
-            position: relative;
         }
 
-        .preview-image {
-            max-width: 100%;
-            max-height: 400px;
+        .toggle-btn {
+            flex: 1;
+            padding: var(--space-xs);
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .toggle-btn.active {
+            background-color: var(--accent);
+            color: var(--bg-primary);
+        }
+
+        .toggle-content {
+            display: none;
+        }
+
+        .toggle-content.active {
             display: block;
         }
 
-        .preview-info {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: rgba(0, 0, 0, 0.7);
-            padding: var(--space-xs) var(--space-sm);
-            font-size: 0.9rem;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .action-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: var(--space-md);
-        }
-
-        .compression-slider {
-            margin: var(--space-md) 0;
+        .slider-container {
+            margin-bottom: var(--space-md);
         }
 
         .slider-header {
@@ -346,6 +340,69 @@
             border-radius: 50%;
             background: var(--accent);
             cursor: pointer;
+        }
+
+        .format-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: var(--space-xs);
+            margin-bottom: var(--space-md);
+        }
+
+        .format-option {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-sm);
+            padding: var(--space-xs);
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .format-option:hover {
+            background-color: rgba(255, 215, 0, 0.2);
+        }
+
+        .format-option.active {
+            background-color: var(--accent);
+            color: var(--bg-primary);
+            border-color: var(--accent);
+        }
+
+        .preview-container {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            margin-bottom: var(--space-md);
+            position: relative;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 400px;
+            display: block;
+        }
+
+        .preview-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: var(--space-xs) var(--space-sm);
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-md);
         }
 
         .toast {
@@ -445,40 +502,47 @@
                     <div class="option-group">
                         <div class="option-title">
                             <i class="fas fa-expand-arrows-alt"></i>
-                            <span>Dimensions</span>
+                            <span>Resize Options</span>
                         </div>
-                        <div class="dimension-inputs">
-                            <div class="input-group">
-                                <label for="widthInput">Width</label>
-                                <input type="number" id="widthInput" min="1" placeholder="Width">
-                            </div>
-                            <div class="input-group">
-                                <label for="heightInput">Height</label>
-                                <input type="number" id="heightInput" min="1" placeholder="Height">
-                            </div>
+                        
+                        <div class="toggle-buttons">
+                            <div class="toggle-btn active" data-target="size-options">By Size</div>
+                            <div class="toggle-btn" data-target="percentage-options">By Percentage</div>
                         </div>
-                        <div class="dimension-inputs">
-                            <div class="input-group">
-                                <label for="unitSelect">Unit</label>
-                                <select id="unitSelect">
-                                    <option value="px">Pixels (px)</option>
-                                    <option value="%">Percent (%)</option>
-                                    <option value="in">Inches (in)</option>
-                                    <option value="cm">Centimeters (cm)</option>
-                                </select>
+                        
+                        <div class="toggle-content active" id="size-options">
+                            <div class="dimension-inputs">
+                                <div class="input-group">
+                                    <label for="widthInput">Width</label>
+                                    <input type="number" id="widthInput" min="1" placeholder="Width">
+                                </div>
+                                <div class="input-group">
+                                    <label for="heightInput">Height</label>
+                                    <input type="number" id="heightInput" min="1" placeholder="Height">
+                                </div>
                             </div>
-                            <div class="input-group">
-                                <label for="predefinedSelect">Predefined Sizes</label>
-                                <select id="predefinedSelect">
-                                    <option value="custom">Custom</option>
-                                    <option value="800x600">800×600 (Small)</option>
-                                    <option value="1024x768">1024×768 (Medium)</option>
-                                    <option value="1920x1080">1920×1080 (Full HD)</option>
-                                    <option value="1280x720">1280×720 (HD)</option>
-                                    <option value="3840x2160">3840×2160 (4K)</option>
-                                </select>
+                            <div class="dimension-inputs">
+                                <div class="input-group">
+                                    <label for="unitSelect">Unit</label>
+                                    <select id="unitSelect">
+                                        <option value="px">Pixels (px)</option>
+                                        <option value="in">Inches (in)</option>
+                                        <option value="cm">Centimeters (cm)</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
+                        
+                        <div class="toggle-content" id="percentage-options">
+                            <div class="slider-container">
+                                <div class="slider-header">
+                                    <span>Scale Percentage</span>
+                                    <span class="slider-value" id="percentageValue">100%</span>
+                                </div>
+                                <input type="range" min="1" max="200" value="100" class="slider" id="percentageSlider">
+                            </div>
+                        </div>
+                        
                         <div class="checkbox-group">
                             <input type="checkbox" id="maintainAspect" checked>
                             <label for="maintainAspect">Maintain aspect ratio</label>
@@ -488,14 +552,34 @@
                     <div class="option-group">
                         <div class="option-title">
                             <i class="fas fa-compress-arrows-alt"></i>
-                            <span>Compression</span>
+                            <span>Compression & Output</span>
                         </div>
-                        <div class="compression-slider">
+                        
+                        <div class="slider-container">
                             <div class="slider-header">
                                 <span>Quality</span>
                                 <span class="slider-value" id="qualityValue">90%</span>
                             </div>
                             <input type="range" min="10" max="100" value="90" class="slider" id="qualitySlider">
+                        </div>
+                        
+                        <div class="slider-container">
+                            <div class="slider-header">
+                                <span>Target File Size (KB) - JPG only</span>
+                                <span class="slider-value" id="targetSizeValue">500 KB</span>
+                            </div>
+                            <input type="range" min="50" max="2000" value="500" class="slider" id="targetSizeSlider">
+                        </div>
+                        
+                        <div class="option-title" style="margin-top: var(--space-md);">
+                            <i class="fas fa-file-export"></i>
+                            <span>Output Format</span>
+                        </div>
+                        <div class="format-options">
+                            <div class="format-option active" data-format="original">Original</div>
+                            <div class="format-option" data-format="jpeg">JPG</div>
+                            <div class="format-option" data-format="png">PNG</div>
+                            <div class="format-option" data-format="webp">WEBP</div>
                         </div>
                     </div>
                 </div>
@@ -540,10 +624,15 @@
             const widthInput = document.getElementById('widthInput');
             const heightInput = document.getElementById('heightInput');
             const unitSelect = document.getElementById('unitSelect');
-            const predefinedSelect = document.getElementById('predefinedSelect');
             const maintainAspect = document.getElementById('maintainAspect');
+            const toggleBtns = document.querySelectorAll('.toggle-btn');
+            const percentageSlider = document.getElementById('percentageSlider');
+            const percentageValue = document.getElementById('percentageValue');
             const qualitySlider = document.getElementById('qualitySlider');
             const qualityValue = document.getElementById('qualityValue');
+            const targetSizeSlider = document.getElementById('targetSizeSlider');
+            const targetSizeValue = document.getElementById('targetSizeValue');
+            const formatOptions = document.querySelectorAll('.format-option');
             const resizeBtn = document.getElementById('resizeBtn');
             const resetBtn = document.getElementById('resetBtn');
             const downloadBtn = document.getElementById('downloadBtn');
@@ -557,6 +646,10 @@
             let currentAspectRatio = 'free';
             let originalWidth = 0;
             let originalHeight = 0;
+            let originalFileSize = 0;
+            let currentFormat = 'original';
+            let resizeMode = 'size'; // 'size' or 'percentage'
+            let dpi = 96; // Default DPI for unit conversion
             
             // Event Listeners
             browseBtn.addEventListener('click', () => fileInput.click());
@@ -578,9 +671,41 @@
             widthInput.addEventListener('input', handleDimensionChange);
             heightInput.addEventListener('input', handleDimensionChange);
             unitSelect.addEventListener('change', handleUnitChange);
-            predefinedSelect.addEventListener('change', handlePredefinedSize);
             maintainAspect.addEventListener('change', handleMaintainAspect);
+            
+            toggleBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    toggleBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    resizeMode = btn.dataset.target === 'size-options' ? 'size' : 'percentage';
+                    
+                    // Show/hide appropriate options
+                    document.querySelectorAll('.toggle-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    document.getElementById(btn.dataset.target).classList.add('active');
+                });
+            });
+            
+            percentageSlider.addEventListener('input', updatePercentageValue);
             qualitySlider.addEventListener('input', updateQualityValue);
+            targetSizeSlider.addEventListener('input', updateTargetSizeValue);
+            
+            formatOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    formatOptions.forEach(o => o.classList.remove('active'));
+                    option.classList.add('active');
+                    currentFormat = option.dataset.format;
+                    
+                    // Show/hide target file size based on format
+                    if (currentFormat === 'jpeg') {
+                        document.querySelector('.slider-container:nth-child(3)').style.display = 'block';
+                    } else {
+                        document.querySelector('.slider-container:nth-child(3)').style.display = 'none';
+                    }
+                });
+            });
+            
             resizeBtn.addEventListener('click', resizeImage);
             resetBtn.addEventListener('click', resetTool);
             downloadBtn.addEventListener('click', downloadImage);
@@ -618,6 +743,14 @@
                     showToast('Please select a valid image file', true);
                     return;
                 }
+                
+                // Check file size (max 10MB)
+                if (file.size > 10 * 1024 * 1024) {
+                    showToast('File is too large. Maximum size is 10MB.', true);
+                    return;
+                }
+                
+                originalFileSize = file.size;
                 
                 const reader = new FileReader();
                 reader.onload = function(e) {
@@ -669,24 +802,28 @@
                 if (currentAspectRatio !== 'free') {
                     applyAspectRatio(currentAspectRatio);
                 }
-                
-                predefinedSelect.value = 'custom';
             }
             
             function handleUnitChange() {
-                // This would require more complex implementation for real units
-                showToast('Pixel conversion for physical units would require DPI information');
-            }
-            
-            function handlePredefinedSize(e) {
-                if (e.target.value === 'custom') return;
-                
-                const [width, height] = e.target.value.split('x').map(Number);
-                widthInput.value = width;
-                heightInput.value = height;
-                
-                if (currentAspectRatio !== 'free') {
-                    applyAspectRatio(currentAspectRatio);
+                const unit = unitSelect.value;
+                if (unit === 'px') {
+                    // Convert from current unit to pixels
+                    if (originalImage) {
+                        widthInput.value = originalWidth;
+                        heightInput.value = originalHeight;
+                    }
+                } else if (unit === 'in') {
+                    // Convert pixels to inches
+                    if (originalImage) {
+                        widthInput.value = (originalWidth / dpi).toFixed(2);
+                        heightInput.value = (originalHeight / dpi).toFixed(2);
+                    }
+                } else if (unit === 'cm') {
+                    // Convert pixels to centimeters
+                    if (originalImage) {
+                        widthInput.value = (originalWidth / dpi * 2.54).toFixed(2);
+                        heightInput.value = (originalHeight / dpi * 2.54).toFixed(2);
+                    }
                 }
             }
             
@@ -697,8 +834,16 @@
                 }
             }
             
+            function updatePercentageValue() {
+                percentageValue.textContent = `${percentageSlider.value}%`;
+            }
+            
             function updateQualityValue() {
                 qualityValue.textContent = `${qualitySlider.value}%`;
+            }
+            
+            function updateTargetSizeValue() {
+                targetSizeValue.textContent = `${targetSizeSlider.value} KB`;
             }
             
             function resizeImage() {
@@ -707,8 +852,30 @@
                     return;
                 }
                 
-                const width = parseInt(widthInput.value);
-                const height = parseInt(heightInput.value);
+                let width, height;
+                
+                if (resizeMode === 'size') {
+                    // Convert dimensions to pixels if needed
+                    width = parseFloat(widthInput.value);
+                    height = parseFloat(heightInput.value);
+                    const unit = unitSelect.value;
+                    
+                    if (unit === 'in') {
+                        width = Math.round(width * dpi);
+                        height = Math.round(height * dpi);
+                    } else if (unit === 'cm') {
+                        width = Math.round(width * dpi / 2.54);
+                        height = Math.round(height * dpi / 2.54);
+                    } else {
+                        width = Math.round(width);
+                        height = Math.round(height);
+                    }
+                } else {
+                    // Percentage mode
+                    const percentage = parseInt(percentageSlider.value) / 100;
+                    width = Math.round(originalWidth * percentage);
+                    height = Math.round(originalHeight * percentage);
+                }
                 
                 if (isNaN(width) || isNaN(height) || width <= 0 || height <= 0) {
                     showToast('Please enter valid dimensions', true);
@@ -731,8 +898,18 @@
                     ctx.drawImage(originalImage, 0, 0, width, height);
                     
                     // Get the resized image as data URL
-                    const quality = qualitySlider.value / 100;
-                    const resizedImageData = canvas.toDataURL('image/jpeg', quality);
+                    let mimeType = 'image/jpeg';
+                    if (currentFormat === 'png') mimeType = 'image/png';
+                    if (currentFormat === 'webp') mimeType = 'image/webp';
+                    
+                    let quality = qualitySlider.value / 100;
+                    let resizedImageData = canvas.toDataURL(mimeType, quality);
+                    
+                    // If target size is specified and format is JPEG
+                    if (currentFormat === 'jpeg') {
+                        const targetSize = targetSizeSlider.value * 1024; // Convert to bytes
+                        resizedImageData = adjustImageToTargetSize(canvas, mimeType, targetSize, quality);
+                    }
                     
                     // Update preview
                     previewImage.src = resizedImageData;
@@ -746,6 +923,39 @@
                 }, 800);
             }
             
+            function adjustImageToTargetSize(canvas, mimeType, targetSize, initialQuality) {
+                let quality = initialQuality;
+                let imageData = canvas.toDataURL(mimeType, quality);
+                let currentSize = calculateFileSize(imageData);
+                
+                // If already below target size, return as is
+                if (currentSize <= targetSize) {
+                    return imageData;
+                }
+                
+                // Binary search for optimal quality
+                let minQuality = 0.1;
+                let maxQuality = quality;
+                let bestQuality = minQuality;
+                let bestImageData = canvas.toDataURL(mimeType, bestQuality);
+                
+                for (let i = 0; i < 10; i++) {
+                    quality = (minQuality + maxQuality) / 2;
+                    imageData = canvas.toDataURL(mimeType, quality);
+                    currentSize = calculateFileSize(imageData);
+                    
+                    if (currentSize <= targetSize) {
+                        minQuality = quality;
+                        bestQuality = quality;
+                        bestImageData = imageData;
+                    } else {
+                        maxQuality = quality;
+                    }
+                }
+                
+                return bestImageData;
+            }
+            
             function calculateFileSize(dataURL) {
                 // Approximate calculation of file size from base64
                 const base64 = dataURL.split(',')[1];
@@ -755,9 +965,10 @@
             
             function updatePreviewInfo(width, height, fileSize) {
                 const sizeKB = Math.round(fileSize / 1024);
+                const sizeReduction = Math.round((1 - (fileSize / originalFileSize)) * 100);
                 previewInfo.innerHTML = `
                     <span>${width} × ${height} px</span>
-                    <span>${sizeKB} KB</span>
+                    <span>${sizeKB} KB (${sizeReduction}% reduction)</span>
                 `;
             }
             
@@ -767,8 +978,19 @@
                     return;
                 }
                 
+                let extension = 'jpg';
+                if (currentFormat === 'png') extension = 'png';
+                if (currentFormat === 'webp') extension = 'webp';
+                if (currentFormat === 'original') {
+                    // Try to get original extension from file name
+                    const file = fileInput.files[0];
+                    if (file) {
+                        extension = file.name.split('.').pop();
+                    }
+                }
+                
                 const link = document.createElement('a');
-                link.download = 'resized-image.jpg';
+                link.download = `resized-image.${extension}`;
                 link.href = previewImage.src;
                 link.click();
                 
@@ -781,6 +1003,7 @@
                 originalImage = null;
                 originalWidth = 0;
                 originalHeight = 0;
+                originalFileSize = 0;
                 
                 // Reset aspect ratio
                 document.querySelector('[data-ratio="free"]').click();
@@ -789,10 +1012,29 @@
                 widthInput.value = '';
                 heightInput.value = '';
                 unitSelect.value = 'px';
-                predefinedSelect.value = 'custom';
                 maintainAspect.checked = true;
+                
+                // Reset sliders
+                percentageSlider.value = 100;
+                updatePercentageValue();
                 qualitySlider.value = 90;
                 updateQualityValue();
+                targetSizeSlider.value = 500;
+                updateTargetSizeValue();
+                
+                // Reset format
+                formatOptions.forEach(opt => opt.classList.remove('active'));
+                document.querySelector('[data-format="original"]').classList.add('active');
+                currentFormat = 'original';
+                
+                // Reset resize mode
+                toggleBtns.forEach(btn => btn.classList.remove('active'));
+                document.querySelector('[data-target="size-options"]').classList.add('active');
+                resizeMode = 'size';
+                document.querySelectorAll('.toggle-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById('size-options').classList.add('active');
                 
                 // Reset preview
                 previewImage.src = '';
@@ -815,8 +1057,10 @@
                 }, 3000);
             }
             
-            // Initialize quality value display
+            // Initialize value displays
+            updatePercentageValue();
             updateQualityValue();
+            updateTargetSizeValue();
         });
     </script>
 </body>
